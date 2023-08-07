@@ -7,25 +7,30 @@ export default function Weather(props) {
     main: "main",
     description: "description",
     temp: 0,
+    pressure: 0
   });
 
   useEffect(() => {
-    console.log(`fetching data with zipCode = ${props.zipCode}`)
+    console.log(`fetching data with zipCode = ${props.zipCode}`);
     if (props.zipCode) {
-        fetch(`http://api.openweathermap.org/data/2.5/weather?q=${props.zipCode},th&units=metric&APPID=22a87e427066796f9593b06b11ea8826`)
-            .then((response) => response.json())
-            .then((json) => {
-                setForecastInfo({
-                    main: json.weather[0].main,
-                    description: json.weather[0].description,
-                    temp: json.main.temp,
-                });
-            })
-            .catch((error) => {
-                console.warn(error);
-            });
+      fetch(
+        `http://api.openweathermap.org/data/2.5/weather?q=${props.zipCode},th&units=metric&APPID=8cb7f9896520ec946afc99687045938b`
+      )
+        .then((response) => response.json())
+        .then((json) => {
+          setForecastInfo({
+            main: json.weather[0].main,
+            description: json.weather[0].description,
+            temp: json.main.temp,
+            pressure: json.main.pressure,
+
+          });
+        })
+        .catch((error) => {
+          console.warn(error);
+        });
     }
-}, [props.zipCode]);
+  }, [props.zipCode]);
 
   return (
     <ImageBackground source={require("../bg.png")} style={styles.backdrop}>
@@ -43,11 +48,11 @@ export default function Weather(props) {
 const styles = StyleSheet.create({
   backdrop: {
     width: "100%",
-    height: "100%"
+    height: "100%",
   },
   background: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.6)",
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -56,12 +61,14 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   title: {
-    fontSize: 20,
-    color: "white",
+    fontSize: 24,
+    color: "black",
+    fontWeight: "bold",
     marginRight: 5,
   },
   zipCode: {
-    fontSize: 20,
-    color: "white",
+    fontSize: 24,
+    color: "black",
+    fontWeight: "bold",
   },
 });

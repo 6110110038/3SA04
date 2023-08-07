@@ -30,7 +30,7 @@ export default function ZipCodeScreen() {
   return (
     <ImageBackground source={require('../main-bg.jpg')} style={styles.backgroundImage}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>เลือกเมืองที่ต้องการ</Text>
+        <Text style={styles.headerText}>เลือกเมืองที่ต้องการทราบสภาพอากาศ</Text>
       </View>
       <FlatList
         data={availableZipItems}
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   headerText: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
   },
