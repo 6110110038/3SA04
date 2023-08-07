@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Forecast from "./Forecast";
-import { ImageBackground, StyleSheet, View, Text } from "react-native";
+import { Text, ImageBackground, StyleSheet, View } from "react-native";
 
 export default function Weather(props) {
   const [forecastInfo, setForecastInfo] = useState({
@@ -9,10 +9,32 @@ export default function Weather(props) {
     temp: 0,
   });
 
+  useEffect(() => {
+    console.log("props.zipCode:", props.zipCode);
+
+    if (props.zipCode) {
+      console.log(`fetching data with zipCode = ${props.zipCode}`);
+      fetch(
+        `https://api.openweathermap.org/data/2.5/weather?q=${props.zipCode},th&units=metric&APPID=8cb7f9896520ec946afc99687045938b`
+      )
+        .then((response) => response.json())
+        .then((json) => {
+          setForecastInfo({
+            main: json.weather[0].main,
+            description: json.weather[0].description,
+            temp: json.main.temp,
+          });
+        })
+        .catch((error) => {
+          console.warn(error);
+        });
+    }
+  }, [props.zipCode]);
+
   return (
     <ImageBackground source={require("../bg.png")} style={styles.backdrop}>
       <View style={styles.background}>
-        <View style={styles.alignment}>
+        <View style={styles.zipCodecontainer}>
           <Text style={styles.title}>Zip code is </Text>
           <Text style={styles.zipCode}>{props.zipCode}</Text>
         </View>
@@ -24,31 +46,26 @@ export default function Weather(props) {
 
 const styles = StyleSheet.create({
   backdrop: {
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
     width: "100%",
-    height: "100%",
+    height: "100%"
   },
   background: {
-    backgroundColor: "rgba(192,192,192,0.3)",
-    height: "60%",
-    width: "100%",
-    flexDirection: "column",
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
     justifyContent: "center",
     alignItems: "center",
   },
+  zipCodecontainer: {
+    flexDirection: "row",
+    marginBottom: 20,
+  },
   title: {
-    fontSize: 32,
-    color: 'white',
-    lineHeight: 50
+    fontSize: 20,
+    color: "white",
+    marginRight: 5,
   },
   zipCode: {
-    fontSize: 32,
-    color: 'white',
-    lineHeight: 50
+    fontSize: 20,
+    color: "white",
   },
-  alignment: {
-    flexDirection: 'row'
-  }
 });
