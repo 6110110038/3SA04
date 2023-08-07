@@ -4,6 +4,7 @@ import { Text, ImageBackground, StyleSheet, View } from "react-native";
 
 export default function Weather(props) {
   const [forecastInfo, setForecastInfo] = useState({
+    name: "place",
     main: "main",
     description: "description",
     temp: 0,
@@ -19,11 +20,11 @@ export default function Weather(props) {
         .then((response) => response.json())
         .then((json) => {
           setForecastInfo({
+            name: json.name,
             main: json.weather[0].main,
             description: json.weather[0].description,
             temp: json.main.temp,
             pressure: json.main.pressure,
-
           });
         })
         .catch((error) => {
@@ -35,10 +36,7 @@ export default function Weather(props) {
   return (
     <ImageBackground source={require("../bg.png")} style={styles.backdrop}>
       <View style={styles.background}>
-        <View style={styles.zipCodecontainer}>
-          <Text style={styles.title}>Zip code is </Text>
-          <Text style={styles.zipCode}>{props.zipCode}</Text>
-        </View>
+        <Text style={styles.header}>{forecastInfo.name}</Text>
         <Forecast {...forecastInfo} />
       </View>
     </ImageBackground>
@@ -53,22 +51,12 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
     backgroundColor: "rgba(255, 255, 255, 0.1)",
-    justifyContent: "center",
     alignItems: "center",
   },
-  zipCodecontainer: {
-    flexDirection: "row",
+  header: {
+    fontSize: 60,
+    color: "black",
+    fontWeight: "bold",
     marginBottom: 20,
-  },
-  title: {
-    fontSize: 24,
-    color: "black",
-    fontWeight: "bold",
-    marginRight: 5,
-  },
-  zipCode: {
-    fontSize: 24,
-    color: "black",
-    fontWeight: "bold",
   },
 });
