@@ -1,19 +1,35 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome"; // Import icons from the library
 
 export default function Forecast(props) {
+  let icon = "question";
+
+
+  if (props.main === "Clear") {
+    icon = "sun-o";
+  } else if (props.main === "Clouds") {
+    icon = "cloud";
+  } else if (props.main === "Rain") {
+    icon = "tint";
+  }
+
   return (
     <View style={styles.container}>
-      <View style={styles.cityContainer}>
-        <Text style={styles.cityText}>City: {props.name}</Text>
-      </View>
-      <Text style={styles.weatherMain}>{props.main}</Text>
-      <Text style={styles.weatherDescription}>Weather: {props.description}</Text>
-      <View style={styles.tempContainer}>
-        <Text style={styles.tempText}>Temperature: {props.temp} °C</Text>
-      </View>
-      <View style={styles.pressureContainer}>
-        <Text style={styles.pressureText}>Pressure: {props.pressure / 1000} atm</Text>
+      {}
+      <Icon name={icon} size={80} color="#333" />
+
+      <View style={styles.weatherInfo}>
+        <Text style={styles.weatherMain}>{props.main}</Text>
+        <Text style={styles.weatherDescription}>{props.description}</Text>
+        <View style={styles.tempContainer}>
+          <Text style={styles.tempText}>Temperature: {props.temp} °C</Text>
+        </View>
+        <View style={styles.pressureContainer}>
+          <Text style={styles.pressureText}>
+            Pressure: {props.pressure / 1000} atm
+          </Text>
+        </View>
       </View>
     </View>
   );
@@ -28,12 +44,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 20,
   },
-  cityContainer: {
-    marginBottom: 10,
-  },
-  cityText: {
-    fontSize: 20,
-    fontWeight: "bold",
+  weatherInfo: {
+    marginTop: 10,
+    alignItems: "center",
   },
   weatherMain: {
     fontSize: 24,
